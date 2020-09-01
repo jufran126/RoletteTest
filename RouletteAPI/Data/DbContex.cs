@@ -174,6 +174,83 @@ namespace RouletteAPI.Data
             }
             return roulettes;
         }
+        public async Task<bool> VRoulette(int id)
+        {
+            int value = 0;
+            using (var ctx = GetInstance())
+            {
+                string query = "SELECT id FROM Roulette WHERE id=? AND State=1";
+                using (var command = new SQLiteCommand(query, ctx))
+                {
+                    command.Parameters.Add(new SQLiteParameter("id", id));
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                            value = Convert.ToInt32(reader[0]);
+                    }
+                }
+            }
+            if (value == 0)
+                return false;
+            else
+                return true;
+        }
+        public async Task<int> GetMoney(int id)
+        {
+            int money = 0;
+            using (var ctx = GetInstance())
+            {
+                string query = "SELECT Money FROM Person WHERE id=?";
+                using (var command = new SQLiteCommand(query, ctx))
+                {
+                    command.Parameters.Add(new SQLiteParameter("id", id));
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                            money = Convert.ToInt32(reader[0]);
+                    }
+                }
+            }
+            return money;
+        }
+        public async void addBet(int id, int bet)
+        {
+            int value = 0;
+            using (var ctx = GetInstance())
+            {
+                string query = "SELECT Bet FROM Roulette WHERE id=?";
+                using (var command = new SQLiteCommand(query, ctx))
+                {
+                    command.Parameters.Add(new SQLiteParameter("id", id));
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                            value = Convert.ToInt32(reader[0]);
+                    }
+                }
+                value += bet;
+                query = "UPDATE Roulette SET Bet=? WHERE id=?";
+                using (var command = new SQLiteCommand(query, ctx))
+                {
+                    command.Parameters.Add(new SQLiteParameter("Bet", value));
+                    command.Parameters.Add(new SQLiteParameter("id", id));
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+        public async void addMoney(int id, int money)
+        {
+            using (var ctx = GetInstance())
+            {
+                string query = "UPDATE Person SET Money=? WHERE id=?";
+                using (var command = new SQLiteCommand(query, ctx))
+                {
+                    command.Parameters.Add(new SQLiteParameter("Money", money));
+                    command.Parameters.Add(new SQLiteParameter("id", id));
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
         #region PrivateMethods
         private static SQLiteConnection GetInstance()
         {

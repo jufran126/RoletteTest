@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RouletteAPI.Models;
+using RouletteAPI.Models.Roulette.Bet.Request;
+using RouletteAPI.Models.Roulette.Bet.Response;
 using RouletteAPI.Models.Roulette.Close.Response;
 using RouletteAPI.Models.Roulette.ListRoulette.Response;
 using RouletteAPI.Models.Roulette.NewRoulette.Response;
@@ -57,6 +59,18 @@ namespace RouletteAPI.Controllers
         public async Task<ActionResult<BaseResponse<List<RouletteResponse>>>> ListRoulettes()
         {
             BaseResponse<List<RouletteResponse>> response = await _rouletteService.ListRoulettes();
+            if (!string.IsNullOrEmpty(response.message))
+                return BadRequest(response);
+            return Ok(response);
+        }
+        [HttpPost("Bet")]
+        public async Task<ActionResult<BaseResponse<BetResponse>>> Bet(BetRequest request)
+        {
+            BetAppRequest data = new BetAppRequest { 
+                bet = request, 
+                idUser = Convert.ToInt32(HttpContext.User.FindFirst("idPerson").Value)
+            };
+            BaseResponse<BetResponse> response = await _rouletteService.Bet(data);
             if (!string.IsNullOrEmpty(response.message))
                 return BadRequest(response);
             return Ok(response);

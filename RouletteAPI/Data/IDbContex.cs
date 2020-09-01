@@ -17,5 +17,9 @@ namespace RouletteAPI.Data
         Task<CloseResponse> Close(int id);
         Task<int> Open(int id);
         Task<List<RouletteResponse>> ListRoulettes();
+        Task<bool> VRoulette(int id);
+        Task<int> GetMoney(int id);
+        void addBet(int id, int bet);
+        void addMoney(int id, int money);
     }
 }

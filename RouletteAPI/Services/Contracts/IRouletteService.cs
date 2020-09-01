@@ -1,4 +1,6 @@
 ﻿using RouletteAPI.Models;
+using RouletteAPI.Models.Roulette.Bet.Request;
+using RouletteAPI.Models.Roulette.Bet.Response;
 using RouletteAPI.Models.Roulette.Close.Response;
 using RouletteAPI.Models.Roulette.ListRoulette.Response;
 using RouletteAPI.Models.Roulette.NewRoulette.Response;
@@ -16,5 +18,6 @@ namespace RouletteAPI.Services.Contracts
         Task<BaseResponse<CloseResponse>> Close(int id);
         Task<BaseResponse<OpenResponse>> Open(int id);
         Task<BaseResponse<List<RouletteResponse>>> ListRoulettes();
+        Task<BaseResponse<BetResponse>> Bet(BetAppRequest request);
     }
 }
