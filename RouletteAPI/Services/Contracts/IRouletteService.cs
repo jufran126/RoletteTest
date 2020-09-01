@@ -1,4 +1,5 @@
 ﻿using RouletteAPI.Models;
+using RouletteAPI.Models.Roulette.Close.Response;
 using RouletteAPI.Models.Roulette.NewRoulette.Response;
 using System;
 using System.Collections.Generic;
@@ -10,5 +11,6 @@ namespace RouletteAPI.Services.Contracts
     public interface IRouletteService
     {
         Task<BaseResponse<NewRouletteResponse>> NewRoulete();
+        Task<BaseResponse<CloseResponse>> Close(int id);
     }
 }

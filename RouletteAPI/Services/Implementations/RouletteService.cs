@@ -1,5 +1,6 @@
 ﻿using RouletteAPI.Data;
 using RouletteAPI.Models;
+using RouletteAPI.Models.Roulette.Close.Response;
 using RouletteAPI.Models.Roulette.NewRoulette.Response;
 using RouletteAPI.Services.Contracts;
 using System;
@@ -25,8 +26,15 @@ namespace RouletteAPI.Services.Implementations
         {
             NewRouletteResponse response = await DbContex.NewRoulette();
             if (response.id == 0)
-                return new BaseResponse<NewRouletteResponse> { Reponse = null, message = "Can't create rouletta" };
+                return new BaseResponse<NewRouletteResponse> { Reponse = null, message = "Can't create roulette" };
             return new BaseResponse<NewRouletteResponse> { Reponse = response };
+        }
+        public async Task<BaseResponse<CloseResponse>> Close(int id)
+        {
+            CloseResponse response = await DbContex.Close(id);
+            if (response.Bet == 0)
+                return new BaseResponse<CloseResponse> { Reponse = null, message = "Not exist roulette" };
+            return new BaseResponse<CloseResponse> { Reponse = response };
         }
         #endregion
     }

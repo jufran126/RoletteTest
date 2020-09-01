@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RouletteAPI.Models;
+using RouletteAPI.Models.Roulette.Close.Response;
 using RouletteAPI.Models.Roulette.NewRoulette.Response;
 using RouletteAPI.Services.Contracts;
 
@@ -26,10 +27,18 @@ namespace RouletteAPI.Controllers
         }
         #endregion
         #region Methods
-        [HttpGet("NewRoulette")]
+        [HttpGet("New")]
         public async Task<ActionResult<BaseResponse<NewRouletteResponse>>> NewRoulette()
         {
             BaseResponse<NewRouletteResponse> response = await _rouletteService.NewRoulete();
+            if (!string.IsNullOrEmpty(response.message))
+                return BadRequest(response);
+            return Ok(response);
+        }
+        [HttpGet("Close")]
+        public async Task<ActionResult<BaseResponse<CloseResponse>>> Close(int id)
+        {
+            BaseResponse<CloseResponse> response = await _rouletteService.Close(id);
             if (!string.IsNullOrEmpty(response.message))
                 return BadRequest(response);
             return Ok(response);

@@ -1,5 +1,6 @@
 ﻿using RouletteAPI.Models.Login.Request;
 using RouletteAPI.Models.Login.Response;
+using RouletteAPI.Models.Roulette.Close.Response;
 using RouletteAPI.Models.Roulette.NewRoulette.Response;
 using System;
 using System.Collections.Generic;
@@ -12,5 +13,6 @@ namespace RouletteAPI.Data
     {
         Task<PersonResponse> GetPerson(LoginRequest request);
         Task<NewRouletteResponse> NewRoulette();
+        Task<CloseResponse> Close(int id);
     }
 }

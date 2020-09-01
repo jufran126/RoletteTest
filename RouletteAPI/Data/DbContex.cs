@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using RouletteAPI.Models.Login.Request;
 using RouletteAPI.Models.Login.Response;
+using RouletteAPI.Models.Roulette.Close.Response;
 using RouletteAPI.Models.Roulette.NewRoulette.Response;
 using System;
 using System.Collections.Generic;
@@ -71,6 +72,30 @@ namespace RouletteAPI.Data
                     {
                         while (reader.Read())
                             response.id = Convert.ToInt32(reader[0]);
+                    }
+                }
+            }
+            return response;
+        }
+        public async Task<CloseResponse> Close(int id)
+        {
+            CloseResponse response = new CloseResponse();
+            using (var ctx = GetInstance())
+            {
+                string query = "UPDATE Roulette SET State=-1 WHERE id=?";
+                using (var command = new SQLiteCommand(query, ctx))
+                {
+                    command.Parameters.Add(new SQLiteParameter("id", id));
+                    command.ExecuteNonQuery();
+                }
+                query = "SELECT Bet FROM Roulette WHERE id=?";
+                using (var command = new SQLiteCommand(query, ctx))
+                {
+                    command.Parameters.Add(new SQLiteParameter("id", id));
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                            response.Bet = Convert.ToInt32(reader[0]);
                     }
                 }
             }

@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Models\Roulette\Close\Request\" />
     <Folder Include="Models\Roulette\NewRoulette\Request\" />
   </ItemGroup>
 
