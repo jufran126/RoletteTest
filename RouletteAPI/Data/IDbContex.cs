@@ -14,5 +14,6 @@ namespace RouletteAPI.Data
         Task<PersonResponse> GetPerson(LoginRequest request);
         Task<NewRouletteResponse> NewRoulette();
         Task<CloseResponse> Close(int id);
+        Task<int> Open(int id);
     }
 }

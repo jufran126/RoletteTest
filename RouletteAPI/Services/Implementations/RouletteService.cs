@@ -2,6 +2,7 @@
 using RouletteAPI.Models;
 using RouletteAPI.Models.Roulette.Close.Response;
 using RouletteAPI.Models.Roulette.NewRoulette.Response;
+using RouletteAPI.Models.Roulette.Open.Response;
 using RouletteAPI.Services.Contracts;
 using System;
 using System.Collections.Generic;
@@ -35,6 +36,13 @@ namespace RouletteAPI.Services.Implementations
             if (response.Bet == 0)
                 return new BaseResponse<CloseResponse> { Reponse = null, message = "Not exist roulette" };
             return new BaseResponse<CloseResponse> { Reponse = response };
+        }
+        public async Task<BaseResponse<OpenResponse>> Open(int id)
+        {
+            int response = await DbContex.Open(id);
+            if (response == 0)
+                return new BaseResponse<OpenResponse> { Reponse = new OpenResponse { Sucess = false }, message = "false" };
+            return new BaseResponse<OpenResponse> { Reponse = new OpenResponse { Sucess = true }, message = "true" };
         }
         #endregion
     }

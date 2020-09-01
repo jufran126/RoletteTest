@@ -13,6 +13,7 @@
   <ItemGroup>
     <Folder Include="Models\Roulette\Close\Request\" />
     <Folder Include="Models\Roulette\NewRoulette\Request\" />
+    <Folder Include="Models\Roulette\Open\Request\" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>

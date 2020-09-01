@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using RouletteAPI.Models;
 using RouletteAPI.Models.Roulette.Close.Response;
 using RouletteAPI.Models.Roulette.NewRoulette.Response;
+using RouletteAPI.Models.Roulette.Open.Response;
 using RouletteAPI.Services.Contracts;
 
 namespace RouletteAPI.Controllers
@@ -39,6 +40,14 @@ namespace RouletteAPI.Controllers
         public async Task<ActionResult<BaseResponse<CloseResponse>>> Close(int id)
         {
             BaseResponse<CloseResponse> response = await _rouletteService.Close(id);
+            if (!string.IsNullOrEmpty(response.message))
+                return BadRequest(response);
+            return Ok(response);
+        }
+        [HttpGet("Open")]
+        public async Task<ActionResult<BaseResponse<OpenResponse>>> Open(int id)
+        {
+            BaseResponse<OpenResponse> response = await _rouletteService.Open(id);
             if (!string.IsNullOrEmpty(response.message))
                 return BadRequest(response);
             return Ok(response);

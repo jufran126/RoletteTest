@@ -101,6 +101,30 @@ namespace RouletteAPI.Data
             }
             return response;
         }
+        public async Task<int> Open(int id)
+        {
+            int value = 0;
+            using (var ctx = GetInstance())
+            {
+                string query = "UPDATE Roulette SET State=1 WHERE id=?";
+                using (var command = new SQLiteCommand(query, ctx))
+                {
+                    command.Parameters.Add(new SQLiteParameter("id", id));
+                    command.ExecuteNonQuery();
+                }
+                query = "SELECT id FROM Roulette WHERE id=?";
+                using (var command = new SQLiteCommand(query, ctx))
+                {
+                    command.Parameters.Add(new SQLiteParameter("id", id));
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                            value = Convert.ToInt32(reader[0]);
+                    }
+                }
+            }
+            return value;
+        }
         #region PrivateMethods
         private static SQLiteConnection GetInstance()
         {
