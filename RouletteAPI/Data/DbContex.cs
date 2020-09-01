@@ -23,7 +23,7 @@ namespace RouletteAPI.Data
         }
         #endregion
         #region Methods
-        public async Task<PersonResponse> Person (LoginRequest request)
+        public async Task<PersonResponse> GetPerson (LoginRequest request)
         {
             List<PersonResponse> people = new List<PersonResponse>();
             using (var ctx = GetInstance())

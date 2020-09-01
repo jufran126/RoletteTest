@@ -9,6 +9,6 @@ namespace RouletteAPI.Data
 {
     public interface IDbContex
     {
-        Task<PersonResponse> Person(LoginRequest request);
+        Task<PersonResponse> GetPerson(LoginRequest request);
     }
 }

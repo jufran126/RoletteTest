@@ -24,12 +24,7 @@ namespace RouletteAPI.Services.Implementations
         #region Methods
         public async Task<BaseResponse<PersonResponse>> Login(LoginRequest request)
         {
-            /*PersonResponse person = new PersonResponse() { 
-                Name="Juan Francisco",
-                id=1,
-                User="jf"
-            };*/
-            PersonResponse person = await DbContex.Person(request);
+            PersonResponse person = await DbContex.GetPerson(request);
             if (person == null)
                 return new BaseResponse<PersonResponse> { Reponse = null, message = "Not exists the user" };
             return new BaseResponse<PersonResponse> { Reponse = person };            
