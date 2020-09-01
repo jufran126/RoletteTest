@@ -2,6 +2,7 @@
 using RouletteAPI.Models.Login.Request;
 using RouletteAPI.Models.Login.Response;
 using RouletteAPI.Models.Roulette.Close.Response;
+using RouletteAPI.Models.Roulette.ListRoulette.Response;
 using RouletteAPI.Models.Roulette.NewRoulette.Response;
 using System;
 using System.Collections.Generic;
@@ -58,11 +59,9 @@ namespace RouletteAPI.Data
             NewRouletteResponse response = new NewRouletteResponse();
             using (var ctx = GetInstance())
             {
-                string query = "INSERT INTO Roulette (State, Bet) VALUES (?, ?)";
+                string query = "INSERT INTO Roulette (State, Bet) VALUES (0, 0)";
                 using (var command = new SQLiteCommand(query, ctx))
                 {
-                    command.Parameters.Add(new SQLiteParameter("State", 0));
-                    command.Parameters.Add(new SQLiteParameter("Bet", 0));
                     command.ExecuteNonQuery();
                 }
                 query = "SELECT id FROM Roulette ORDER by id DESC LIMIT 1";
@@ -124,6 +123,56 @@ namespace RouletteAPI.Data
                 }
             }
             return value;
+        }
+        public async Task<List<RouletteResponse>> ListRoulettes()
+        {
+            List<RouletteBDResponse> responses = new List<RouletteBDResponse>();
+            using (var ctx = GetInstance())
+            {
+                string query = "SELECT id,State,Bet FROM Roulette";
+                using (var command = new SQLiteCommand(query, ctx))
+                {
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            responses.Add(new RouletteBDResponse
+                            {
+                                id = Convert.ToInt32(reader["id"].ToString()),
+                                State = Convert.ToInt32(reader["State"].ToString()),
+                                Bet = Convert.ToInt32(reader["Bet"].ToString())
+                            });
+                        }
+                    }
+
+                }
+            }
+            List<RouletteResponse> roulettes = new List<RouletteResponse>();
+            if (responses.Count > 0)
+            {
+                foreach(var roulette in responses)
+                {
+                    if (roulette.State > 0)
+                    {
+                        roulettes.Add(new RouletteResponse
+                        {
+                            State = "Open",
+                            Bet = roulette.Bet,
+                            id = roulette.id
+                        });
+                    }
+                    else
+                    {
+                        roulettes.Add(new RouletteResponse
+                        {
+                            State = "Close",
+                            Bet = roulette.Bet,
+                            id = roulette.id
+                        });
+                    }
+                }
+            }
+            return roulettes;
         }
         #region PrivateMethods
         private static SQLiteConnection GetInstance()

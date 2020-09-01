@@ -1,6 +1,7 @@
 ﻿using RouletteAPI.Data;
 using RouletteAPI.Models;
 using RouletteAPI.Models.Roulette.Close.Response;
+using RouletteAPI.Models.Roulette.ListRoulette.Response;
 using RouletteAPI.Models.Roulette.NewRoulette.Response;
 using RouletteAPI.Models.Roulette.Open.Response;
 using RouletteAPI.Services.Contracts;
@@ -43,6 +44,13 @@ namespace RouletteAPI.Services.Implementations
             if (response == 0)
                 return new BaseResponse<OpenResponse> { Reponse = new OpenResponse { Sucess = false }, message = "false" };
             return new BaseResponse<OpenResponse> { Reponse = new OpenResponse { Sucess = true }, message = "true" };
+        }
+        public async Task<BaseResponse<List<RouletteResponse>>> ListRoulettes()
+        {
+            List<RouletteResponse> responses = await DbContex.ListRoulettes();
+            if (responses.Count == 0)
+                return new BaseResponse<List<RouletteResponse>> { Reponse = null, message = "Not exist list" };
+            return new BaseResponse<List<RouletteResponse>> { Reponse = responses };
         }
         #endregion
     }
