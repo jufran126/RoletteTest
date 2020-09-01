@@ -36,6 +36,7 @@ namespace RouletteAPI
         {
             #region Services
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IRouletteService, RouletteService>();
             #endregion
             #region DB
             services.AddScoped<IDbContex, DbContex>();

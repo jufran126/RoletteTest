@@ -13,7 +13,7 @@ namespace RouletteAPI.Services.Implementations
     public class AuthService:IAuthService
     {
         #region Properties
-        IDbContex DbContex;
+        private IDbContex DbContex;
         #endregion
         #region Constructor
         public AuthService(IDbContex dbContex)

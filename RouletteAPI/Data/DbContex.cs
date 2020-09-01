@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using RouletteAPI.Models.Login.Request;
 using RouletteAPI.Models.Login.Response;
+using RouletteAPI.Models.Roulette.NewRoulette.Response;
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
@@ -51,8 +52,30 @@ namespace RouletteAPI.Data
             }
             return people.FirstOrDefault();
         }
-
-
+        public async Task<NewRouletteResponse> NewRoulette()
+        {
+            NewRouletteResponse response = new NewRouletteResponse();
+            using (var ctx = GetInstance())
+            {
+                string query = "INSERT INTO Roulette (State, Bet) VALUES (?, ?)";
+                using (var command = new SQLiteCommand(query, ctx))
+                {
+                    command.Parameters.Add(new SQLiteParameter("State", 0));
+                    command.Parameters.Add(new SQLiteParameter("Bet", 0));
+                    command.ExecuteNonQuery();
+                }
+                query = "SELECT id FROM Roulette ORDER by id DESC LIMIT 1";
+                using (var command = new SQLiteCommand(query, ctx))
+                {
+                    using(var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                            response.id = Convert.ToInt32(reader[0]);
+                    }
+                }
+            }
+            return response;
+        }
         #region PrivateMethods
         private static SQLiteConnection GetInstance()
         {
